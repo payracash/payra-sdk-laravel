@@ -19,7 +19,7 @@ class PayraServiceProvider extends ServiceProvider
     {
         $this->publishes([
             __DIR__ . '/../config/payra.php' => config_path('payra.php'),
-        ], 'config');
+        ], 'payra-config');
 
         $this->loadRoutesFrom(__DIR__ . '/../routes/api.php');
     }
