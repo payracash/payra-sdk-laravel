@@ -31,6 +31,7 @@ You will need your merchantID and a dedicated account (private key) to generate 
 -   PHP 8.0+
 -   Payra account with  `merchantId`  and  `privateKey`  for the selected network
     -   [https://payra.cash](https://payra.cash/)
+
 ---
 
 ## Installation
@@ -79,12 +80,12 @@ class PaymentController extends Controller
         $generator = app(PayraSignatureGenerator::class);
 
         $signature = $generator->generateSignature(
-            'polygon',         // Network
-            '0xTokenAddress',  // ERC-20 token address (e.g. USDT)
-            'order_12345',     // Unique order ID per merchant
-            '1000000',         // Amount in Wei ($1 = 1_000_000) 
-            now()->timestamp,  // Timestamp
-            '0xPayerAddress'   // Payer's wallet address
+            $network,         // e.g. "polygon"
+            $tokenAddress,    // ERC-20 USDT or USDC
+            $orderId,         // string (unique per merchantId)
+            $amount,          // in Wei $1 = 1_000_000
+            (int) $timestamp,
+            $payerAddress     // Public payer wallet address
         );
 
         return response()->json(['signature' => $signature]);
