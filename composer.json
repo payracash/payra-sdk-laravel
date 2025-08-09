@@ -11,7 +11,7 @@
   ],
   "require": {
     "php": "^8.0",
-    "web3p/web3.php": "^0.3"
+    "web3p/web3.php": "^0.3",
     "web3p/ethabi": "^0.1",
     "web3p/utils": "^0.1",
     "web3p/rlp": "^0.1"
