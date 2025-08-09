@@ -82,7 +82,7 @@ class PaymentController extends Controller
             'polygon',         // Network
             '0xTokenAddress',  // ERC-20 token address (e.g. USDT)
             'order_12345',     // Unique order ID per merchant
-            1_000_000,         // Amount in Wei ($1 = 1_000_000)
+            '1000000',         // Amount in Wei ($1 = 1_000_000) 
             now()->timestamp,  // Timestamp
             '0xPayerAddress'   // Payer's wallet address
         );
