@@ -31,5 +31,7 @@
         "Payra": "Payra\\Facades\\Payra"
       }
     }
-  }
+  },
+  "minimum-stability": "dev",
+  "prefer-stable": true
 }
