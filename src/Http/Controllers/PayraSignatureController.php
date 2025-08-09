@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Payra\Facades\Payra;
 
-class SignatureController extends Controller
+class PayraSignatureController extends Controller
 {
     public function __invoke(Request $request)
     {

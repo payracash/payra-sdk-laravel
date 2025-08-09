@@ -6,7 +6,7 @@ use Web3\Contracts\Ethabi;
 use Elliptic\EC;
 use Web3\Utils;
 
-class SignatureGenerator
+class PayraSignatureGenerator
 {
     private Ec $ec;
     private Ethabi $ethabi;

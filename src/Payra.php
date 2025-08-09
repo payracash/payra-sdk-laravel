@@ -2,13 +2,13 @@
 
 namespace Payra;
 
-use Payra\SignatureGenerator;
+use Payra\PayraSignatureGenerator;
 
 class Payra
 {
     public function sign(array $payload): string
     {
-        $generator = new SignatureGenerator();
+        $generator = new PayraSignatureGenerator();
 
         return $generator->generateSignature(
             $payload['network'],
