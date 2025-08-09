@@ -1,5 +1,5 @@
 {
-  "name": "payracash/laravel-sdk",
+  "name": "payracash/payra-sdk-laravel",
   "description": "Payra Crypto Payments signature generator SDK for Laravel",
   "type": "library",
   "license": "MIT",
