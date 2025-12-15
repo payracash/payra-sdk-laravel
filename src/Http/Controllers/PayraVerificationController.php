@@ -6,31 +6,25 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Payra\Facades\Payra;
 
-class PayraSignatureController extends Controller
+class PayraVerificationController extends Controller
 {
     public function __invoke(Request $request)
     {
         $request->validate([
             'network' => 'required|string',
-            'token_address' => 'required|string',
             'order_id' => 'required|string',
-            'amount_wei' => 'required',
-            'timestamp' => 'required|integer',
-            'payer_address' => 'required|string',
         ]);
 
         try {
-            $signature = Payra::generateSignature($request->all());
+            $verify = Payra::orderVerification($request->all());
             return response()->json([
-                'status' => 'success',
-                'signature' => $signature,
-                'message' => 'Signature generated successfully.',
+                'result' => $verify,
             ]);
         } catch (\Throwable $e) {
             report($e);
             return response()->json([
                 'status' => 'error',
-                'message' => 'Failed to generate signature.',
+                'message' => 'Failed to verify order.',
             ], 500);
         }
     }

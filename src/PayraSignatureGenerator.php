@@ -1,5 +1,4 @@
 <?php
-
 namespace Payra;
 
 use Web3\Contracts\Ethabi;
@@ -33,7 +32,7 @@ class PayraSignatureGenerator
      * @param string $network name (e.g., 'polygon').
      * @param string $tokenAddress Address of the ERC-20 token (e.g., '0xc2132D05D31c914a87C6611C10748AEb04B58eF').
      * @param string $orderId Unique identifier of the order (e.g., 'order_19_984723').
-     * @param string $amount Amount in the smallest unit of the token (e.g., '13360000' for 1.336 USDT).
+     * @param string $amountWei Amount in the smallest unit of the token (e.g., '13360000' for 1.336 USDT).
      * @param int $timestamp Transaction time in Unix timestamp format (e.g., 1728392929).
      * @param string $payerAddress Payer wallet Address (e.g., '0xc87a3D05D31c914a87C6611C10748AEb0a5e$2').
      * @return string Signature in the format '0x<r><s><v>' (65-byte hex with '0x' prefix).
@@ -43,7 +42,7 @@ class PayraSignatureGenerator
         string $network,
         string $tokenAddress,
         string $orderId,
-        string $amount,
+        string $amountWei,
         int $timestamp,
         string $payerAddress,
     ): string {
@@ -59,7 +58,7 @@ class PayraSignatureGenerator
         try {
 
           $types = ['address', 'uint256', 'string', 'uint256', 'uint256', 'address'];
-          $values = [$tokenAddress, $merchantId, $orderId, $amount, $timestamp, $payerAddress];
+          $values = [$tokenAddress, $merchantId, $orderId, $amountWei, $timestamp, $payerAddress];
 
           $encoded = $this->ethabi->encodeParameters($types, $values);
           $messageHash = ltrim($this->utils::sha3($encoded), '0x');
