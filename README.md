@@ -6,7 +6,6 @@ This SDK provides:
 - Secure generation of **ECDSA signatures** compatible with the Payra smart contract — used for order payment verification.
 - Simple methods for **checking the on-chain details of orders** to confirm completed payments.
 
-
 ## How It Works
 
 The typical flow for signing and verifying a Payra transaction:
@@ -97,9 +96,7 @@ This file stores your **private configuration** and connection settings for all 
 
 ### Required Variables
 
-#### Exchange Rate (optional)
-
-Used for automatic fiat → USD conversions via the built-in Payra utilities.
+Exchange Rate (optional) used for automatic fiat → USD conversions via the built-in Payra utilities.
 
 ```bash
 # (Optional) API key required for authenticating backend requests
@@ -134,11 +131,11 @@ These values will be loaded into `config/payra.php`.
 
 #### Important Notes
 
--   The cache automatically refreshes when it expires.    
--   You can adjust the cache duration by setting  `PAYRA_EXCHANGE_RATE_CACHE_TIME`:
-    -   `5`  → cache for 5 minutes
-    -   `60`  → cache for 1 hour
-    -   `720`  → cache for 12 hours (default)
+- The cache automatically refreshes when it expires.    
+- You can adjust the cache duration by setting  `PAYRA_EXCHANGE_RATE_CACHE_TIME`:
+    -  `5` → cache for 5 minutes
+    -  `60` → cache for 1 hour
+    -  `720` → cache for 12 hours (default)
 - Each network (Polygon, Ethereum, Linea) has its own **merchant ID**, **signature key**, and **RPC URLs**.
 - The SDK automatically detects which chain configuration to use based on the selected network.
 - You can use multiple RPC URLs for redundancy (the SDK will automatically fall back if one fails).
@@ -190,6 +187,7 @@ curl -X POST "https://your-domain.com/api/payra/generate/signature" \
 ```
 
 #### Endpoints for API
+
 ```bash
 https://your-domain.com/payra/generate/signature
 https://your-domain.com/payra/order/details
@@ -199,11 +197,11 @@ https://your-domain.com/payra/convert/to/usd
 
 #### Security best practices
 
--   Always use  **HTTPS**  — never send the key over plain HTTP.
+-   Always use  **HTTPS** , never send the key over plain HTTP.
 -   Store the key only in server-side  `.env`  (never in client-side code or public repositories).
 -   Consider rotating the key periodically and update  `.env`  (and deployed configs).
 -   If you need stricter security, combine the API key with IP allowlists, HMAC signatures, or short-lived tokens.
--   If  `PAYRA_API_KEY`  is missing from  `.env`, middleware will return an explicit configuration error (500); if it is present but mismatched, requests return  `401 Unauthorized`.
+-   If  `PAYRA_API_KEY`  is missing from  `.env`, middleware will return an explicit configuration error (500), if it is present but mismatched, requests return  `401 Unauthorized`.
 
 
 ## Usage Example
@@ -468,7 +466,7 @@ class PaymentController extends Controller
 To use the conversion helper, you need a free API key from  **[exchangerate-api.com](https://exchangerate-api.com/)**.
 
 1.  Register a free account and get your API key.
-2.  Add the key to your  `.env`  file:
+2.  Add the key to your `.env`  file:
 
 ```php
 PAYRA_EXCHANGE_RATE_API_KEY=your_api_key_here
@@ -549,7 +547,7 @@ class PaymentController extends Controller
 
 ## Security Notice
 
-Never expose your private key in frontend or client-side code.  
+Never expose your signature key in frontend or client-side code.  
 This SDK is  **server-side only**  and must be used securely on your backend. Never use it in frontend or browser environments. Also, never commit your `.env`  file to version control.
 
 ## Project
