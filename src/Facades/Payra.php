@@ -1,5 +1,4 @@
 <?php
-
 namespace Payra\Facades;
 
 use Illuminate\Support\Facades\Facade;

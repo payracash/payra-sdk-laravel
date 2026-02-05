@@ -1,19 +1,18 @@
 <?php
-
 namespace Payra;
 
 use Web3\Contracts\Ethabi;
 use Elliptic\EC;
 use Web3\Utils;
 
-class PayraSignatureGenerator
+class PayraSignature
 {
     private Ec $ec;
     private Ethabi $ethabi;
     private Utils $utils;
 
     /**
-     * Constructor for PayraSignatureGenerator.
+     * Constructor for PayraSignature.
      *
      * @param string $merchantPrivateKey Your Ethereum private key (64 hex characters, without '0x').
      * @throws \Exception If the private key is invalid.
@@ -33,40 +32,40 @@ class PayraSignatureGenerator
      * @param string $network name (e.g., 'polygon').
      * @param string $tokenAddress Address of the ERC-20 token (e.g., '0xc2132D05D31c914a87C6611C10748AEb04B58eF').
      * @param string $orderId Unique identifier of the order (e.g., 'order_19_984723').
-     * @param string $amount Amount in the smallest unit of the token (e.g., '13360000' for 1.336 USDT).
+     * @param string $amountWei Amount in the smallest unit of the token (e.g., '13360000' for 1.336 USDT).
      * @param int $timestamp Transaction time in Unix timestamp format (e.g., 1728392929).
      * @param string $payerAddress Payer wallet Address (e.g., '0xc87a3D05D31c914a87C6611C10748AEb0a5e$2').
      * @return string Signature in the format '0x<r><s><v>' (65-byte hex with '0x' prefix).
      * @throws \Exception If an error occurs during signature generation.
      */
-    public function generateSignature(
+    public function generate(
         string $network,
         string $tokenAddress,
         string $orderId,
-        string $amount,
+        string $amountWei,
         int $timestamp,
         string $payerAddress,
     ): string {
         $network = strtolower($network);
 
-        $merchantPrivateKey = config("payra.{$network}.private_key");
+        $merchantSignatureKey = config("payra.{$network}.signature_key");
         $merchantId = config("payra.{$network}.merchant_id");
 
-        if (!$merchantPrivateKey || !$merchantId) {
+        if (!$merchantSignatureKey || !$merchantId) {
             throw new \Exception("Missing merchant credentials for network: $network");
         }
 
         try {
 
           $types = ['address', 'uint256', 'string', 'uint256', 'uint256', 'address'];
-          $values = [$tokenAddress, $merchantId, $orderId, $amount, $timestamp, $payerAddress];
+          $values = [$tokenAddress, $merchantId, $orderId, $amountWei, $timestamp, $payerAddress];
 
           $encoded = $this->ethabi->encodeParameters($types, $values);
           $messageHash = ltrim($this->utils::sha3($encoded), '0x');
           $prefixedMessage = "\x19Ethereum Signed Message:\n32" . hex2bin($messageHash);
           $finalHash = $this->utils::sha3($prefixedMessage);
 
-          $key = $this->ec->keyFromPrivate($merchantPrivateKey, 'hex');
+          $key = $this->ec->keyFromPrivate($merchantSignatureKey, 'hex');
           $signature = $key->sign($finalHash, ['canonical' => true]);
 
           $r = str_pad($signature->r->toString(16), 64, '0', STR_PAD_LEFT);

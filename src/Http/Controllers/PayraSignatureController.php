@@ -1,5 +1,4 @@
 <?php
-
 namespace Payra\Http\Controllers;
 
 use Illuminate\Http\Request;
@@ -12,16 +11,15 @@ class PayraSignatureController extends Controller
     {
         $request->validate([
             'network' => 'required|string',
-            'tokenAddress' => 'required|string',
-            'orderId' => 'required|string',
-            'amount' => 'required|string',
+            'token_address' => 'required|string',
+            'order_id' => 'required|string',
+            'amount_wei' => 'required',
             'timestamp' => 'required|integer',
-            'payerAddress' => 'required|string',
+            'payer_address' => 'required|string',
         ]);
 
         try {
-            $signature = Payra::sign($request->all());
-
+            $signature = Payra::generate($request->all());
             return response()->json([
                 'status' => 'success',
                 'signature' => $signature,
