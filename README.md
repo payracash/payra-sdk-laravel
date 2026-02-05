@@ -211,15 +211,15 @@ https://your-domain.com/payra/convert/to/usd
 ### Generate Signature
 
 ```php
-use Payra\PayraSignatureGenerator;
+use Payra\PayraSignature;
 
 class PayraController extends Controller
 {
     public function generateSignature()
     {
-        $payraSignature = app(PayraSignatureGenerator::class);
+        $payraSignature = app(PayraSignature::class);
 
-        $signature = $payraSignature->generateSignature(
+        $signature = $payraSignature->generate(
             $network,         	// e.g. "polygon"
             $tokenAddress,    	// ERC-20 USDT or USDC
             $orderId,         	// string (unique per merchantId)
@@ -341,6 +341,8 @@ class PayraController extends Controller
     }
 }
 ```
+
+---
 
 ## Utilities / Conversion Helpers
 
